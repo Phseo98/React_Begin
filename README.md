@@ -34,9 +34,27 @@ React는 사용자 인터페이스 구축을 하기위해 효율적이고 유연
 - 컴포넌트 상태 변경 시 React는 해당 컴포넌트를 리렌더링 하여 UI업데이트를 함
 - useState훅을 사용하여 함수형 컴포넌트에서 state 관리 가능
 
+#### useState
+useState는 React에서 컴포넌트가 변경되면 자동으로 리랜더링 해주는 방법
+
+``` javascript
+// 2개의 인덱스로 가진 배열로 반환
+// [0] data, [1] 0번 인덱스인 data를 바꿀때 사용하는 함수
+React.useState(); 
+
+// 배열접근 방식
+const x = React.useState(); 
+const data = x[0];
+const modifier = x[1];
+// 배열 구조 분해 할당, 가독성 good!~
+const [data, modifier] = x;
+```
+
+
 ### props
 - 부모 컴포넌트로부터 자식 컴포넌트로 데이터를 전달하는데 사용함
 - 읽기전용으로 전달되며 객체형태로 전달됨
+
 ``` JavaScript
 // 부모 컴포넌트
 function ParentComponent() {
