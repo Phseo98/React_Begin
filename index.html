@@ -8,17 +8,21 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
     const root = ReactDOM.createRoot(document.getElementById("root"));
-    let counter = 0;
-    function countUp(){
-        counter++;
-    }
 
     function App(){
-        const [counter, modifier] = React.useState(66);
+        const [counter, setCounter] = React.useState(0);
+        const countUp = () => {
+            //setCounter(counter + 1);    
+            // 현재 값을 가지고 변경이 일어나면 이 방법이 올바름 방법
+            setCounter((current) => current + 1);
+            // 함수의 첫번째 인자는 현재 값, 즉 useState(current)이 값임
+            // React는 현재 값이란걸 보장하고있음
+        };
+
         return (
         <div>
             <h3>Total click : {counter}</h3>
-            <button onClick={countUp()}>Click me!</button>
+            <button onClick={countUp}>Click me!</button>
         </div>
         ); 
     } 

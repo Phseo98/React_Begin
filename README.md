@@ -43,11 +43,13 @@ useState는 React에서 컴포넌트가 변경되면 자동으로 리랜더링 �
 React.useState(); 
 
 // 배열접근 방식
-const x = React.useState(); 
+const x = React.useState(0); 
 const data = x[0];
 const modifier = x[1];
 // 배열 구조 분해 할당, 가독성 good!~
-const [data, modifier] = x;
+const [data, modifier] = React.useState(0);
+// 어떤 값을 부여하던 modifier 함수는 그 값으로 리렌더링 함
+// modifier를 통해 state를 변경할 때 컴포넌트가 재생성됨, 즉 새로운 값으로 UI에 반영
 ```
 
 
