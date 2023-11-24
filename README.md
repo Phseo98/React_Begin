@@ -64,6 +64,7 @@ const changeValue = () => modifier((current) => !current);  // 이렇게 접근 
 ### props
 - 부모 컴포넌트로부터 자식 컴포넌트로 데이터를 전달하는데 사용함
 - 읽기전용으로 전달되며 객체형태로 전달됨
+- 리액트 컴포넌트들은 인자를 받음 
 
 ``` JavaScript
 // 부모 컴포넌트
@@ -76,6 +77,17 @@ function ParentComponent() {
 function ChildComponent(props) {
   return <p>{props.message}</p>;
 }
+
+// props는 object 형태로 전달되기 때문에 인자에 객체로도 받을수 있음
+function ChildComponent({message}) {
+  return <p>{message}</p>;
+}
+
+// 컴포넌트가 React.memo()로 래핑되면 부모 컴포넌트로 부터 자식컴포넌트에게 데이터를 전달할때 메모이징 할수 있다
+const Memoizing = React.memo(ChildComponent);
+// 부모컴포넌트로 부터 자식컴포넌트에게 데이터를 전달할때 타입을 확인 할수 없기 떄문에 
+// 타입에러가 생기지 않음 그래서 propTypes사용
+// propTypes을 사용하면 타입을 지정하여 에러를 표시해줌
 ```
 
 ### 공부하다 모르는 용어
@@ -91,3 +103,7 @@ js의 이벤트핸들러 함수를 호출 시 첫번째 인자로 이벤트객�
 Hook 이란 함수 컴포넌트에서 ReactState와 lifecycle features를 연동 할수 있게 해줌
 ##### Lifecycle
 Lifecycle이란 함수 컴포넌트에서 렌더링, 값변경, 삭제 시 특정 작업을 수행하게 함(useEffect?)
+
+#### Memoizing
+Memoizing이란 이전 값이랑 새로 계산되는 값이랑 동일하면 수행 하지않음
+
