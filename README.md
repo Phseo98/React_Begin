@@ -50,6 +50,14 @@ const modifier = x[1];
 const [data, modifier] = React.useState(0);
 // 어떤 값을 부여하던 modifier 함수는 그 값으로 리렌더링 함
 // modifier를 통해 state를 변경할 때 컴포넌트가 재생성됨, 즉 새로운 값으로 UI에 반영
+
+// useState 훅 사용시 state 직접 변경하는 건 올바르지 못함 
+// why? 1.race condition 동시접근문제
+const [data, modifier] = React.useState(false);
+const changeValue = () => modifier(data);                   // 이렇게 접근 X
+const changeValue = () => modifier((current) => !current);  // 이렇게 접근 해야함
+
+
 ```
 
 
@@ -68,5 +76,18 @@ function ParentComponent() {
 function ChildComponent(props) {
   return <p>{props.message}</p>;
 }
-
 ```
+
+### 공부하다 모르는 용어
+##### 이벤트
+이벤트란 웹 브라우저에서 DOM과 사용자가 interactive 하는 것
+##### 이벤트 핸들러 
+이벤트 핸들러란 특정요소에 이벤트를 처리하기 위한 함수
+
+js의 이벤트핸들러 함수를 호출 시 첫번째 인자로 이벤트객체를 전달 받을 수 있음
+호출한 함수안에서 preventDefault() 메서드 호출시 기본 동작 취소도 가능함
+
+##### Hook
+Hook 이란 함수 컴포넌트에서 ReactState와 lifecycle features를 연동 할수 있게 해줌
+##### Lifecycle
+Lifecycle이란 함수 컴포넌트에서 렌더링, 값변경, 삭제 시 특정 작업을 수행하게 함(useEffect?)
