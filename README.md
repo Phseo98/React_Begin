@@ -9,8 +9,7 @@ React는 사용자 인터페이스 구축을 하기위해 효율적이고 유연
 5. Single Page Application
 
 ### Virtual DOM 
-컴포넌트가 렌더링 되면 DOM의 복제본을 메모리에 생성하고, 컴포넌트에 변경된 부분이 있으면 DOM과 복제본 DOM을 비교해 
-변경된 부분만 DOM에 반영되어 렌더링 됨
+컴포넌트가 렌더링 되면 DOM의 복제본을 메모리에 생성하고, 컴포넌트에 변경된 부분이 있으면 DOM과 복제본 DOM을 비교해, 변경된 부분만 DOM에 반영되어 렌더링 됨
 
 #### 동작과정
 1. 컴포넌트 랜더링 초기 가상DOM 생성
@@ -56,10 +55,7 @@ const [data, modifier] = React.useState(0);
 const [data, modifier] = React.useState(false);
 const changeValue = () => modifier(data);                   // 이렇게 접근 X
 const changeValue = () => modifier((current) => !current);  // 이렇게 접근 해야함
-
-
 ```
-
 
 ### props
 - 부모 컴포넌트로부터 자식 컴포넌트로 데이터를 전달하는데 사용함
@@ -90,20 +86,75 @@ const Memoizing = React.memo(ChildComponent);
 // propTypes을 사용하면 타입을 지정하여 에러를 표시해줌
 ```
 
+### useEffect
+- state가 변화 할때마다 컴포넌트가 reder되면 매우 비효율적일 수 있음
+- when? api를 통해서 데이터가져올때 
+- why? state 변화가 있을떄 마다 재랜더링 되는 특징이 있는데 api 호출해서 데이터를 가져오면 불필요한 부분도 재랜더링 되고 랜더링 될때마다 api 호출 하기때문에 비효율적임
+- 렌더링 관리를 위해 useEffect 사용
+- 내가 원할떄 코드를 실행할 수 있음
+
+
+``` javascript
+import { useState, useEffect  } from 'react';
+import Button from './Button';
+
+function App() {
+  const[counter, setCounter] = useState(0);
+  const[keyword, setKeyword] = useState("");
+  const onClick = () => setCounter((prev) => prev + 1);
+  const onChange = (event) => setKeyword(event.target.value);
+  useEffect(() => {
+    console.log("I run only once.")
+  }, []); // [] 안에는 react가 변화하는걸감지, 빈배열이면 한번만 실행되는 이유
+  useEffect(() => {
+     console.log("I run when 'keyword' Changes");
+  }, [keyword]); // keyword가 변화할때 코드실행  변수에의존 한다 (의존성)
+  useEffect(() => {
+    console.log("I run when 'counter' Changes");
+ }, [counter]); // counter가 변화할때 코드실행 
+  useEffect(() => {
+  console.log("I run when 'counter' and 'keyword' Changes");
+}, [counter, keyword]); // counter,keyword가 변화할때 코드실행 
+
+  // Clean Up function
+  // Clean Up 함수는 컴포넌트가 unMount될때 실행됨
+  useEffect(() => { 
+      console.log("createded :)"); // Mount 될때 호출
+      return () => console.log("distoried :("); // Mount 해제 될때 호출
+  }, []);
+  return (
+    <div>
+      <input 
+        value={keyword}
+        onChange={onChange}
+        type="text" 
+        placeholder="Search here.." />
+      <h1>{counter}</h1>
+      <button onClick={onClick}>click me!</button>
+     </div>
+  );
+}
+
+export default App;
+```
+
+
 ### 공부하다 모르는 용어
-##### 이벤트
+#### 이벤트
 이벤트란 웹 브라우저에서 DOM과 사용자가 interactive 하는 것
-##### 이벤트 핸들러 
+#### 이벤트 핸들러 
 이벤트 핸들러란 특정요소에 이벤트를 처리하기 위한 함수
 
 js의 이벤트핸들러 함수를 호출 시 첫번째 인자로 이벤트객체를 전달 받을 수 있음
 호출한 함수안에서 preventDefault() 메서드 호출시 기본 동작 취소도 가능함
 
-##### Hook
+#### Hook
 Hook 이란 함수 컴포넌트에서 ReactState와 lifecycle features를 연동 할수 있게 해줌
-##### Lifecycle
+#### Lifecycle
 Lifecycle이란 함수 컴포넌트에서 렌더링, 값변경, 삭제 시 특정 작업을 수행하게 함(useEffect?)
 
 #### Memoizing
 Memoizing이란 이전 값이랑 새로 계산되는 값이랑 동일하면 수행 하지않음
 
+#### Mount
+Mount란 컴포넌트가 DOM에 삽입되고 나서 화면에 나타날때를 의미함
